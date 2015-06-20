@@ -1,7 +1,11 @@
 #!/bin/bash
 
+source .common.sh
+
 # Build 
-docker run -w /code -t -i -v $PWD/code:/code haskell-development-environment cabal build
+$(docker_command) cabal build
 
 # Run
-./code/dist/build/code/code
+IFS='.' read -ra ADDR <<< "$(cd code; ls *.cabal)"
+project_name=${ADDR[0]}
+./code/dist/build/$project_name/$project_name
